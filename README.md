@@ -25,4 +25,4 @@
 ## Используемые технологии
 - Язык программирования: Python.
 - GUI-библиотека: PyQt.
-- Библиотека для обучения нейросетей: TensorFlow, Scikit-learn, PyTorch, numpy, pandas.
+- Библиотека для обучения нейросетей: TensorFlow, Scikit-learn, PyTorch, NumPy, Pandas.
