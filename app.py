@@ -4,6 +4,8 @@ from PySide6.QtCore import QTimer
 from PySide6.QtGui import QIcon
 from tensorflow import keras
 import numpy as np
+from joblib import load
+from sklearn.preprocessing import StandardScaler
 
 class Form(QDialog):
 
@@ -104,9 +106,12 @@ class Form(QDialog):
         average_discipline_score = float(math_score+russian_language_score+choosed_discipline_score)/3.
         sum_all_scores = math_score+russian_language_score+choosed_discipline_score+achievements_score
         percentage = (float(sum_all_scores)/347.)*100
+        student_params = np.array([[gender, priority, math_score, russian_language_score, choosed_discipline_score, achievements_score, have_gold_medal, have_silver_medal, average_discipline_score, sum_all_scores, percentage]])
         
-        prediction_number = np.argmax(self.model.predict(np.array([[gender, priority, math_score, russian_language_score, choosed_discipline_score, achievements_score, have_gold_medal, have_silver_medal, average_discipline_score, sum_all_scores, percentage]]))['dense_2'])
+        features_encoder = load('std_scaler.bin')
+        student_params = features_encoder.transform(student_params)
         
+        prediction_number = np.argmax(list(self.model.predict(student_params).values())[0])
         prediction_number_to_word = {0: 'Неудовлетворительно', 1: 'Удовлетворительно', 2: 'Хорошо', 3:'Отлично'}
         prediction_number_to_color = {0: 'red', 1: 'orange', 2: 'yellow', 3: 'green'}
         
